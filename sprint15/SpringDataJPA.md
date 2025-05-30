@@ -5,6 +5,7 @@ ORM (англ. Object-Relational Mapping, «объектно-реляционн�
 По аннотациям фреймворк устанавливает соответствия — между названием таблицы и классом, а также между колонками и полями класса Post. В некоторых случаях можно обойтись без указания аннотаций @Table и @Column — фреймворк сам вычислит названия колонок по названиям полей класса. Мы указываем эти аннотации для наглядности.
 # Hibernate в Spring
 **Зависимости**
+<https://docs.spring.io/spring-data/jpa/reference/repositories/create-instances.html>
 - spring-data-jpa - обеспечивает интеграцию Spring и JPA
 - hibernate-core — отвечает за реализацию интерфейсов JPA
 - postgresql — содержит драйвер БД PostgreSQL.
@@ -57,6 +58,52 @@ ORM (англ. Object-Relational Mapping, «объектно-реляционн�
     return dataSource;
 } 
 ```
+Следующий компонент для настройки — сам Hibernate. Опишем простой метод, возвращающий объект типа Properties. Он будет содержать важные свойства для настройки Hibernate
 
+```
+  private Properties hibernateProperties() {
+    Properties properties = new Properties();
+    properties.put("hibernate.jdbc.time_zone",
+            environment.getRequiredProperty("hibernate.jdbc.time_zone"));
+    properties.put("hibernate.show_sql",
+            environment.getProperty("hibernate.show_sql", "false"));
+    return properties;
+} 
+```
 
+hibernate.jdbc.time_zone - указывает Hibernate, что ноебходимо использовать заданный часовой пояс ри чтении и записи столбоц в стипом timestamp
+hibernate.show_sql - параметр show_sql принимает значение true или false, он отвечает за включение или отключение режима отладочного вывода SQL запроса
+
+**EntityManager**
+- отвечает за управление всеми сущностями, которые юудут сохраняться в бд и выгружаться из неё
+```
+  @Bean
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+    final HibernateJpaVendorAdapter vendorAdapter = 
+            new HibernateJpaVendorAdapter();
+
+    final LocalContainerEntityManagerFactoryBean emf =
+            new LocalContainerEntityManagerFactoryBean();
+
+    emf.setDataSource(dataSource);
+    emf.setJpaVendorAdapter(vendorAdapter);
+    emf.setPackagesToScan("ru.practicum");
+    emf.setJpaProperties(hibernateProperties());
+
+    return emf;
+} 
+```
+LocalContainerEntityManagerFactoryBean - представляет собой фабрику EntityManager 
+Метод entityManagerFactory(DataSource dataSource) - позваляет для определения бина использовать другой 
+HibernateJpaVendorAdapter - связывает интерфейсы JPA и их реализацию внутри фреймворка
+setPackagesToScan - указываем пакет внутри которого будут искаться сущности (@Entity) 
+**JpaTransactionManager**
+```
+  @Bean
+public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    JpaTransactionManager transactionManager = new JpaTransactionManager();
+    transactionManager.setEntityManagerFactory(entityManagerFactory);
+    return transactionManager;
+} 
+```
 # Hibernate в Spring Boot
