@@ -112,26 +112,26 @@ public JpaTransactionManager transactionManager(EntityManagerFactory entityManag
     <dependency>
      <groupId>org.postgresql</groupId>
      <artifactId>postgresql</artifactId>
- </dependency>
- 
- <dependency>
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-starter-data-jpa</artifactId>
- </dependency>
+   </dependency>
+   
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-data-jpa</artifactId>
+   </dependency>
    ```
 2. Указываем настройки 
-```
- spring:
-   application.name: later
-   main.banner-mode: OFF
-   jpa:
-     show-sql: true
-     properties:
-         hibernate.jdbc.time_zone: UTC
-   datasource:
-     username: "dbuser"
-     password: "12345"
-     url: "jdbc:postgresql://localhost:5432/later"
-     driver-class-name: "org.postgresql.Driver"
-```
+  ```
+   spring:
+     application.name: later
+     main.banner-mode: OFF
+     jpa:
+       show-sql: true
+       properties:
+           hibernate.jdbc.time_zone: UTC
+     datasource:
+       username: "dbuser"
+       password: "12345"
+       url: "jdbc:postgresql://localhost:5432/later"
+       driver-class-name: "org.postgresql.Driver"
+  ```
    
