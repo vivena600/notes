@@ -2,6 +2,9 @@ https://youtu.be/vxE1aGTEnbE?si=ISSsU3KcUGreUziv
 
 # Elasticsearch
 https://habr.com/ru/articles/766674/
+https://suchkov.tech/elasticsearch-quick-start/
+
+Elasticsearch — это хранилище документов, c возможностью создавать полнотекстовые индексы для последующего поиска, чаще всего используемое в качестве поискового движка. ElasticSearch добавляет к возможностям библиотеки Apache Lucene, на котором основан, такие функции, как шардирование, репликацию, удобный JSON API и множество других улучшений. Это делает ElasticSearch одним из самых популярных решений для полнотекстового поиска.
 
 ### Подключение 
 Пример для Maven:
